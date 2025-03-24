@@ -23,8 +23,8 @@
             border-radius: 15px;
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
             text-align: center;
-            width: 90%;
-            max-width: 600px;
+            width: 95%;
+            height: 90vh;
         }
 
         #score {
@@ -64,7 +64,6 @@
         }
 
         .answer-input input {
-            width: calc(100% - 40px);
             padding: 12px;
             border: 1px solid #ddd;
             border-radius: 8px;
@@ -156,37 +155,170 @@
                 margin-top: 10px;
             }
         }
+
+        .tab-nav {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 0;
+            background-color: #34495e;
+            padding: 15px 15px;
+            border-radius: 8px 8px 0 0;
+            margin-bottom: 15px !important;
+            margin: -30px;
+
+        }
+
+        .tab-nav button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: transparent;
+            color: #ecf0f1;
+            font-weight: bold;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .tab-nav button.active {
+            background-color: #2980b9;
+            color: white;
+        }
+
+        .tab-nav button:hover {
+            background-color: #2c3e50;
+        }
+
+        .create-sample {
+            display: none;
+            text-align: left;
+            max-height: 95vh;
+        }
+
+        .create-sample label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .create-sample input {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .create-sample button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            color: white;
+        }
+
+        .practice {
+            /* display: flex;
+            justify-content: center;
+            width: 100%; */
+
+        }
+
+        .practice-con {
+            /* max-width: 600px; */
+        }
+
+        /* ===============Table============= */
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            position: sticky;
+            top: -1px;
+            z-index: 1;
+        }
+
+        .sentence-table {
+            margin-top: 20px;
+            max-height: calc(90vh - 250px);
+            overflow: auto;
+        }
+
+        table input[type="checkbox"] {
+            cursor: pointer;
+            min-width: 10px
+        }
     </style>
 </head>
 
 <body>
     <div class="container">
-        <div class="header-answer">
-            <div id="score" style="width: 200px">Điểm: 0/0</div>
-            <select id="voiceSelect"></select>
+        <div class="tab-nav">
+            <button class="tab-button active" data-tab="practice">Practice</button>
+            <button class="tab-button" data-tab="create-sample">Create Sample</button>
         </div>
-        <div class="body-answer">
-            <div class="answer-input">
-                <span onclick="speak()" class="pointer">🔊</span>
-                <input type="text" id="answer" style="width: 80%;" placeholder="Enter the answer..." autocomplete="off">
-            </div>
-            <div class="button-row">
-                <button onclick="checkAnswer()">✔ Check </button>
-                <button onclick="showAnswer()">👀 Answer</button>
+        <div class="practice">
+            <div class="practice-con">
+                <div class="header-answer">
+                    <div id="score" style="width: 200px">Score: 0/0</div>
+                    <select id="voiceSelect"></select>
+                </div>
+                <div class="body-answer">
+                    <div class="answer-input">
+                        <span onclick="speak()" class="pointer">🔊</span>
+                        <input type="text" id="answer" style="width: 90%;" placeholder="Enter the answer..."
+                            autocomplete="off">
+                    </div>
+                    <div class="button-row">
+                        <button onclick="checkAnswer()" style="min-width: 100px; width: 50%">✔ Check </button>
+                        <div style="width: 20px;"></div>
+                        <button onclick="showAnswer()" style="min-width: 110px ;width: 50%;">👀 Answer</button>
+                    </div>
+                </div>
+                <p id="message"></p>
+                <p id="english" style="color: green; font-weight: bold;"></p>
+                <p id="vietnamese" class="text-gray"></p>
+                <div class="row">
+                    <button onclick="prevSentence()">⬅ Pre</button>
+                    <button onclick="nextSentence()">Next ➡</button>
+                </div>
             </div>
         </div>
-        <p id="message"></p>
-        <p id="english" style="color: green; font-weight: bold;"></p>
-        <p id="vietnamese" class="text-gray"></p>
-        <div class="row">
-            <button onclick="prevSentence()">⬅ Pre</button>
-            <button onclick="nextSentence()">Next ➡</button>
+        <div class="create-sample" style="display: none;">
+            <label for="en">English:</label>
+            <input type="text" id="en">
+            <label for="vi">Vietnamese:</label>
+            <input type="text" id="vi">
+            <button onclick="addSentence()">Submit</button>
+            <div class="sentence-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" id="checkAll"></th>
+                            <th>English</th>
+                            <th>Vietnamese</th>
+                        </tr>
+                    </thead>
+                    <tbody id="sentenceTableBody">
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 
     <script>
-        const BIN_ID = "67dd3f5d8561e97a50f023d1";
-        const API_KEY = "$2a$10$nhEMSbt5f6ndDu6g5pUk.u67T0zTxnAyoUax9gLhPZr1wJayJsHYa";
+        const BASE_ID = "app21D24Cikhyb5H0";
+        const TABLE_NAME = "language";
+        const API_KEY = "pat9gctVkKgdlqvor.4c786e485c5ff093ad0231f0753e80c88660989ecd338652fcfd02bd57601f28";
         let sentences = [];
         let index = 0;
         let speechInstance = null;
@@ -194,28 +326,62 @@
         let score = 0;
         let showedAnswer = [];
 
-        async function getDataFromJSONBin() {
-            try {
-                const response = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
-                    method: "GET",
-                    headers: {
-                        "X-Master-Key": API_KEY,
-                    },
+        const tabButtons = document.querySelectorAll('.tab-button');
+        const tabContents = document.querySelectorAll('.container > .practice, .container > .create-sample');
+        const container = document.querySelector('.container');
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const tabId = button.dataset.tab;
+                tabButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                tabContents.forEach(content => {
+                    content.style.display = content.classList.contains(tabId) ? 'block' : 'none';
                 });
+            });
+        });
+
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const tabId = button.dataset.tab;
+
+                tabButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+
+                tabContents.forEach(content => {
+                    content.style.display = content.classList.contains(tabId) ? 'block' : 'none';
+                });
+            });
+        });
+
+
+        async function getAirtableData() {
+            try {
+                const response = await fetch(
+                    `https://api.airtable.com/v0/${BASE_ID}/${TABLE_NAME}?filterByFormula={status}=FALSE()`,
+                    {
+                        method: "GET",
+                        headers: {
+                            Authorization: `Bearer ${API_KEY}`,
+                        },
+                    }
+                );
 
                 if (!response.ok) {
-                    throw new Error(`Lỗi API: ${response.status}`);
+                    throw new Error(`Error: ${response.status}`);
                 }
-
                 const data = await response.json();
-                sentences = getRandomSubset(data.record, 100);
+                sentences = getRandomSubset(data.records.map(record => record.fields), 100);
+                console.log("sentences: ", sentences);
+                createTableRows();
+
                 updateScore();
-                speak(5);
+                // speak(5);
             } catch (error) {
-                console.error("Erorr:", error);
+                console.error("Error:", error);
             }
         }
-        getDataFromJSONBin();
+
+        getAirtableData();
         populateVoices();
 
         function updateSentence() {
@@ -242,14 +408,11 @@
                 speechSynthesis.cancel();
                 clearTimeout(speakTimeout);
             }
-            
             speechInstance = new SpeechSynthesisUtterance(sentences[index].en);
             speechInstance.lang = "en-GB";
             speechInstance.rate = 1;
             const selectedVoice = document.getElementById("voiceSelect").value;
             speechInstance.voice = speechSynthesis.getVoices().find(voice => voice.name === selectedVoice);
-            console.log("vao day: ", speechInstance);
-            
             let count = 0;
             function speakAgain() {
                 if (count < repeat) {
@@ -328,6 +491,62 @@
                 .sort(() => Math.random() - 0.5)
                 .slice(0, maxRecords);
         }
+
+        function addSentence() {
+            const en = document.getElementById('en').value;
+            const vi = document.getElementById('vi').value;
+            if (en && vi) {
+                const records = [{ fields: { "en": en, "vi": vi } }]
+                createSample(records);
+            } else {
+                alert('Vui lòng nhập cả câu tiếng Anh và tiếng Việt.');
+            }
+        }
+
+        function createSample(records) {
+            fetch(`https://api.airtable.com/v0/${BASE_ID}/${TABLE_NAME} `, {
+                method: "POST",
+                headers: {
+                    "Authorization": `Bearer ${API_KEY}`,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ records })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log("data: ", data);
+
+                    document.getElementById('en').value = '';
+                    document.getElementById('vi').value = '';
+                    alert('successfully');
+                })
+                .catch(error => console.error("Error:", error));
+        }
+
+
+        // ================table==================
+        const tableBody = document.getElementById("sentenceTableBody");
+        const checkAll = document.getElementById("checkAll");
+
+        function createTableRows() {
+            sentences.forEach((sentence, index) => {
+                const row = tableBody.insertRow();
+                const checkboxCell = row.insertCell();
+                const englishCell = row.insertCell();
+                const vietnameseCell = row.insertCell();
+
+                checkboxCell.innerHTML = `<input type="checkbox" class="rowCheckbox" data-index="${index}">`;
+                englishCell.textContent = sentence.en;
+                vietnameseCell.textContent = sentence.vi;
+            });
+        }
+
+        checkAll.addEventListener("change", function () {
+            const rowCheckboxes = document.querySelectorAll(".rowCheckbox");
+            rowCheckboxes.forEach(checkbox => {
+                checkbox.checked = this.checked;
+            });
+        });
 
         speechSynthesis.onvoiceschanged = populateVoices;
 
