@@ -446,7 +446,6 @@
                 }
                 const data = await response.json();
                 sentences = getRandomSubset(data.records.map(record => record.fields), 100);
-                console.log("sentences: ", sentences);
                 createTableRows();
                 updateScore();
                 speak(1);
@@ -488,8 +487,6 @@
             const selectedVoice = document.getElementById("voiceSelect").value;
             speechInstance.voice = speechSynthesis.getVoices().find(voice => voice.name === selectedVoice);
             document.getElementById("myImage").src = sentences[index].url || "https://static.vecteezy.com/system/resources/thumbnails/022/059/000/small_2x/no-image-available-icon-vector.jpg";
-            console.log("Da vao");
-            
             let count = 0;
             function speakAgain() {
                 if (count < repeat) {
@@ -595,7 +592,6 @@
             })
                 .then(response => response.json())
                 .then(data => {
-                    console.log("data: ", data);
                     document.getElementById('en').value = '';
                     document.getElementById('vi').value = '';
                     alert('successfully');
@@ -658,8 +654,6 @@
 
         // ===============GetData=============
         async function getSampleData(status) {
-            console.log("status: ", status);
-
             try {
                 const response = await fetch(
                     `https://api.airtable.com/v0/${BASE_ID}/${TABLE_NAME}?filterByFormula={status}=TRUE()`,
