@@ -54,7 +54,11 @@
             flex-direction: row;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
+        }
+
+        #myImage {
+            margin-bottom: 10px;
         }
 
         .answer-input {
@@ -321,12 +325,12 @@
             <div class="tab-button active" data-tab="practice">Practice</div>
             <div class="tab-button" data-tab="create-sample">Create Sample</div>
         </div>
-        <a href="/e-learning/about.html">Vào trang About</a>
         <div class="practice">
             <div class="header-answer">
                 <div id="score" style="width: 200px">Score: 0/0</div>
                 <select id="voiceSelect"></select>
             </div>
+            <img id="myImage" height="150px" alt="Hình ảnh">
             <div class="body-answer">
                 <div class="answer-input">
                     <span onclick="speak()" class="pointer">🔊</span>
@@ -428,7 +432,7 @@
         async function getAirtableData() {
             try {
                 const response = await fetch(
-                    `https://api.airtable.com/v0/${BASE_ID}/${TABLE_NAME}?filterByFormula={status}=TRUE()`,
+                    `https://api.airtable.com/v0/${BASE_ID}/${TABLE_NAME}?filterByFormula={status}=FALSE()`,
                     {
                         method: "GET",
                         headers: {
@@ -444,9 +448,8 @@
                 sentences = getRandomSubset(data.records.map(record => record.fields), 100);
                 console.log("sentences: ", sentences);
                 createTableRows();
-
                 updateScore();
-                // speak(5);
+                speak(1);
             } catch (error) {
                 console.error("Error:", error);
             }
@@ -484,6 +487,9 @@
             speechInstance.rate = 1;
             const selectedVoice = document.getElementById("voiceSelect").value;
             speechInstance.voice = speechSynthesis.getVoices().find(voice => voice.name === selectedVoice);
+            document.getElementById("myImage").src = sentences[index].url || "https://static.vecteezy.com/system/resources/thumbnails/022/059/000/small_2x/no-image-available-icon-vector.jpg";
+            console.log("Da vao");
+            
             let count = 0;
             function speakAgain() {
                 if (count < repeat) {
@@ -651,9 +657,9 @@
 
 
         // ===============GetData=============
-        async function getAirtableData(status) {
+        async function getSampleData(status) {
             console.log("status: ", status);
-            
+
             try {
                 const response = await fetch(
                     `https://api.airtable.com/v0/${BASE_ID}/${TABLE_NAME}?filterByFormula={status}=TRUE()`,
