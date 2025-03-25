@@ -94,18 +94,19 @@
             box-shadow: inset 0 4px 6px rgba(255, 255, 255, 0.5),
                 0 4px 10px rgba(0, 0, 0, 0.2);
             transition: all 0.3s ease;
+            font-family: 'Lobster', cursive;
         }
 
         button:hover {
             background: linear-gradient(to bottom, #becdff 5%, #6e8efb 50%, #a777e3 95%);
             box-shadow: inset 0 6px 8px rgba(255, 255, 255, 0.6),
                 0 6px 12px rgba(0, 0, 0, 0.3);
-            scale: 0.9;
+            scale: 0.95;
         }
 
         button:active {
             transform: scale(0.95);
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 2px 4px rgba(41, 37, 37, 0.2);
         }
 
         #message {
@@ -115,7 +116,7 @@
         }
 
         #english {
-            color: #28a745;
+            color: green;
             font-weight: 600;
             margin-top: 10px;
         }
@@ -161,36 +162,35 @@
             border-radius: 5px;
         }
 
-        .practice {
-            /* display: flex;
-            justify-content: center;
-            width: 100%; */
-
-        }
-
-        .practice-con {
-            /* max-width: 600px; */
-        }
-
         /* ===============Table============= */
 
         table {
             width: 100%;
             border-collapse: collapse;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
         th,
         td {
-            border: 1px solid #ddd;
+            border: 1px solid #c0cee0;
             padding: 8px;
             text-align: left;
         }
 
         th {
-            background-color: #f2f2f2;
+            background: #9da6c5;
+            color: #fff;
             position: sticky;
             top: -1px;
             z-index: 1;
+        }
+
+        tr:nth-child(even) {
+            background-color: #fff;
+        }
+
+        tr:nth-child(odd) {
+            background-color: #eaeef5;
         }
 
         .sentence-table {
@@ -201,7 +201,7 @@
 
         table input[type="checkbox"] {
             cursor: pointer;
-            min-width: 10px
+            min-width: 15px;
         }
 
         .tab-nav {
@@ -212,6 +212,7 @@
             overflow: hidden;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             position: relative;
+            font-family: 'Lobster', cursive;
         }
 
         .tab-button {
@@ -328,13 +329,14 @@
                             autocomplete="off">
                     </div>
                     <div class="button-row">
-                        <button onclick="checkAnswer()" style="min-width: 120px; width: 50%">✔ Check </button>
+                        <button onclick="checkAnswer()" style="min-width: 120px; width: 50%;"><span
+                                style="color: green;">✔</span> Check </button>
                         <div style="width: 20px;"></div>
                         <button onclick="showAnswer()" style="min-width: 130px ;width: 50%;">👀 Answer</button>
                     </div>
                 </div>
                 <p id="message"></p>
-                <p id="english" style="color: green; font-weight: bold;"></p>
+                <p id="english"></p>
                 <p id="vietnamese" class="text-gray"></p>
                 <div class="row">
                     <button onclick="prevSentence()">⬅ Pre</button>
@@ -378,7 +380,7 @@
             </div>
         </div>
         <audio id="correctSound" src="https://www.myinstants.com/media/sounds/correct.mp3"></audio>
-        <audio id="wrongSound" src="https://www.myinstants.com/media/sounds/oh-no-no-no-laugh.mp3"></audio>
+        <audio id="wrongSound" src="https://www.myinstants.com/media/sounds/windows-error.mp3"></audio>
     </div>
 
     <script>
